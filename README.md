@@ -5,7 +5,7 @@ OCSVM의 hyperparameter selection을 위한 PseudoSampleGeneration의 구현 코
 15개의 Benchmark dataset에 대한 실험은 jupyter lab에서 수행 되었습니다.
 
 donut.csv는 간단한 활용례를 위한 2D 데이터입니다.
-## 2-D 활용례
+## 2-D dataset에 대한 작동 예시
 
 dount.csv와 PSG.py가 같은 프로젝트 디렉토리 내에 있어야 합니다.  
 라이브러리 요구사항 : numpy/pandas/sklearn/scipy  
