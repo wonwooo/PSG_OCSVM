@@ -10,7 +10,7 @@ import random
 import copy
 from sklearn.neighbors import NearestNeighbors
 
-class PseudoPoints:
+class PseudoSamples:
     def __init__(self, data, testNum):
         # data type should be DataFrame
         # testnum : number of acceptance rejection test by uniform number
@@ -295,6 +295,7 @@ class PseudoPoints:
             Z = Z.reshape(xx.shape)
             plt.contour(xx, yy, Z, colors='gold', linewidths = 5) #cmap=plt.cm.Paired, color='purple')
             plt.legend(loc=2, fontsize='large')
+            plt.show()
         return opt_comb
 
 
