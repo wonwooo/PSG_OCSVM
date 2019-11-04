@@ -9,8 +9,8 @@ donut.csv는 간단한 활용례를 위한 2D 데이터입니다.
 
 dount.csv와 PSG.py가 같은 프로젝트 디렉토리 내에 있어야 합니다.
 
-import pandas as pd
-import PSG
+import pandas as pd  
+import PSG  
 
 donut = pd.read_csv('donut.csv')  
 model_donut = PSG.PseudoSamples(donut, 2)  
