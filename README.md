@@ -8,6 +8,7 @@ donut.csv는 간단한 활용례를 위한 2D 데이터입니다.
 ## 2-D 활용례
 
 dount.csv와 PSG.py가 같은 프로젝트 디렉토리 내에 있어야 합니다.
+라이브러리 요구사항 : numpy/pandas/sklearn/scipy  
 
 import pandas as pd  
 import PSG  
