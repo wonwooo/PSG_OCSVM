@@ -15,6 +15,7 @@ import time
 
 np.seterr(divide='ignore', invalid='ignore')
 
+
 class PseudoSamples:
     def __init__(self, data, generation_type):
         # data type should be DataFrame
@@ -26,19 +27,17 @@ class PseudoSamples:
         nbrs = NearestNeighbors(n_neighbors=N, algorithm='ball_tree').fit(data)
         dists = nbrs.kneighbors(data)[0]
         self.epsilon = np.mean(np.max(dists, axis=1))
-        self.testNum = int(2*np.sqrt(self.dim))
-        #'sampling' or 'duplicate's
+        self.testNum = int(2 * np.sqrt(self.dim))
+        # 'sampling' or 'duplicate's
         self.generation_type = generation_type
-
-
 
     # only in 2D
     def visualize_data(self):
         plt.scatter(self.data.iloc[:, 0], self.data.iloc[:, 1], s=20, color='skyblue')
-        '''
+
         for i in range(self.data.shape[0]):
             plt.text(self.data.iloc[i, 0], self.data.iloc[i, 1], str(i))
-        '''
+
         plt.show()
 
     def get_neighbors(self, index_of_target):
@@ -78,6 +77,85 @@ class PseudoSamples:
         ax.add_artist(circle)
         fig.show()
 
+    def visualize_generation(self, index_of_target):
+        idx, pointset = self.get_neighbors(index_of_target)
+        color = ['red' if i == True else 'navy' for i in pointset['target']]
+        targetcoord = np.squeeze(pointset[pointset['target'] == True].values)[0:self.dim]
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
+
+        # temp_neighbors1 = pointset.sample(frac=1, replace = True).iloc[:, 0:self.dim]
+        # temp_neighbors2 = pointset.sample(frac=1, replace = True).iloc[:, 0:self.dim]
+        temp_neighbors1 = pointset.sample(frac=0.9).iloc[:, 0:self.dim]
+        temp_neighbors2 = pointset.sample(frac=0.9).iloc[:, 0:self.dim]
+
+        # ax1
+        ax1.set_title('(a) Original neighbors in sphere', size=15)
+        ax1.scatter(pointset.iloc[:, 0], pointset.iloc[:, 1], color=color, label='Original neighbors')
+        ax1.scatter(targetcoord[0], targetcoord[1], color='red', label='Target data x')
+        ax1.scatter(np.mean(pointset.iloc[:, 0]), np.mean(pointset.iloc[:, 1]), marker='s', s=40, color='green',
+                    label='centroid of original neighbors')
+        ax1.set_xlim(targetcoord[0] - self.epsilon - 0.05, targetcoord[0] + self.epsilon + 0.05)
+        ax1.set_ylim(targetcoord[1] - self.epsilon - 0.05, targetcoord[1] + self.epsilon + 0.05)
+
+        circle1 = plt.Circle((targetcoord[[0]], targetcoord[[1]]), radius=self.epsilon, color='g', fill=False)
+        ax1.add_artist(circle1)
+        # ax1.legend(loc=2, fontsize='medium')
+        # ax2
+        ax2.set_title('(b) Outlier generation with temporary neighbors', size=15)
+        ax2.scatter(temp_neighbors1.iloc[:, 0], temp_neighbors1.iloc[:, 1], color='skyblue',
+                    label='Temporary neighbors')
+
+        ax2.set_xlim(targetcoord[0] - self.epsilon - 0.05, targetcoord[0] + self.epsilon + 0.05)
+        ax2.set_ylim(targetcoord[1] - self.epsilon - 0.05, targetcoord[1] + self.epsilon + 0.05)
+        p_o1 = targetcoord - np.mean(temp_neighbors1)
+        p_o1 = self.epsilon * (p_o1 / np.linalg.norm(p_o1)) + targetcoord
+
+        ax2.scatter(p_o1[0], p_o1[1], color='red', marker='x', label='Generated pseudo outlier')
+
+        ax2.scatter(np.mean(temp_neighbors1.iloc[:, 0]), np.mean(temp_neighbors1.iloc[:, 1]), s=50, marker='*',
+                    color='brown',
+                    label='centroid of temporary neighbors')
+        dx1 = p_o1[0] - np.mean(temp_neighbors1.iloc[:, 0])
+        dy1 = p_o1[1] - np.mean(temp_neighbors1.iloc[:, 1])
+
+        ax2.arrow(np.mean(temp_neighbors1.iloc[:, 0]), np.mean(temp_neighbors1.iloc[:, 1]), dx1, dy1, head_width=0.05,
+                  head_length=0.1, width=0.001, facecolor='gold', edgecolor='yellow', length_includes_head=True,
+                  label='arrow')
+        circle2 = plt.Circle((targetcoord[[0]], targetcoord[[1]]), radius=self.epsilon, color='g', fill=False)
+        ax2.add_artist(circle2)
+        ax2.scatter(targetcoord[0], targetcoord[1], color='red')
+        ax2.scatter(np.mean(pointset.iloc[:, 0]), np.mean(pointset.iloc[:, 1]), marker='s', s=40, color='green',
+                    label='centroid of original neighbors')
+        # ax2.legend(loc=2, fontsize='medium')
+
+        # ax3
+        ax3.set_title('(c) Outlier generation with temporary neighbors', size=15)
+        ax3.scatter(temp_neighbors2.iloc[:, 0], temp_neighbors2.iloc[:, 1], color='skyblue',
+                    label='Temporary neighbors')
+
+        ax3.set_xlim(targetcoord[0] - self.epsilon - 0.05, targetcoord[0] + self.epsilon + 0.05)
+        ax3.set_ylim(targetcoord[1] - self.epsilon - 0.05, targetcoord[1] + self.epsilon + 0.05)
+        p_o2 = targetcoord - np.mean(temp_neighbors2)
+        p_o2 = self.epsilon * (p_o2 / np.linalg.norm(p_o2)) + targetcoord
+
+        ax3.scatter(p_o2[0], p_o2[1], color='red', marker='x', label='Generated pseudo outlier')
+
+        ax3.scatter(np.mean(temp_neighbors2.iloc[:, 0]), np.mean(temp_neighbors2.iloc[:, 1]), s=50, marker='*',
+                    color='brown',
+                    label='centroid of temporary neighbors')
+        dx2 = p_o2[0] - np.mean(temp_neighbors2.iloc[:, 0])
+        dy2 = p_o2[1] - np.mean(temp_neighbors2.iloc[:, 1])
+
+        ax3.arrow(np.mean(temp_neighbors2.iloc[:, 0]), np.mean(temp_neighbors2.iloc[:, 1]), dx2, dy2, head_width=0.05,
+                  head_length=0.1, width=0.001, facecolor='gold', edgecolor='yellow', length_includes_head=True)
+        circle3 = plt.Circle((targetcoord[[0]], targetcoord[[1]]), radius=self.epsilon, color='g', fill=False)
+        ax3.add_artist(circle3)
+        ax3.scatter(targetcoord[0], targetcoord[1], color='red')
+        ax3.scatter(np.mean(pointset.iloc[:, 0]), np.mean(pointset.iloc[:, 1]), marker='s', s=40, color='green',
+                    label='centroid of original neighbors')
+        # ax3.legend(loc=2, fontsize='medium')
+        fig.show()
+
     def get_features(self):
 
         # f1 : epsilon 내에 잡힌 neighbor target의 갯수; volume 추정량
@@ -96,11 +174,11 @@ class PseudoSamples:
             f2_ = np.nan if len(idx) == 1 else distance.euclidean(targetcoord, np.mean(pointset.iloc[:, 0:self.dim]))
             f3_ = 'outlier' if len(idx) == 1 else 'normal'
             if len(idx) != 1:
-                #generation directions with sampling with replace
+                # generation directions with sampling with replace
                 pseudo_outlier = []
-                for _ in range(2*self.testNum):
+                for _ in range(2 * self.testNum):
                     if self.generation_type == 'replace':
-                        p_o = targetcoord - np.mean(pointset.sample(frac=1, replace = True).iloc[:, 0:self.dim])
+                        p_o = targetcoord - np.mean(pointset.sample(frac=1, replace=True).iloc[:, 0:self.dim])
                     elif self.generation_type == 'sampling':
                         p_o = targetcoord - np.mean(pointset.sample(frac=0.8).iloc[:, 0:self.dim])
                     p_o = self.epsilon * (p_o / np.linalg.norm(p_o)) + targetcoord
@@ -138,7 +216,6 @@ class PseudoSamples:
             else:
                 pseudo_target = [np.nan] * self.dim
 
-
             f1.append(f1_)
             f2.append(f2_)
             f3.append(f3_)
@@ -167,7 +244,6 @@ class PseudoSamples:
         min_ = min(prob[np.isnan(prob) == False])
         prob = np.array([1 if np.isnan(prob[i]) else (prob[i] - min_) / (max_ - min_) for i in range(len(prob))])
 
-
         prob = prob.reshape(len(prob), 1)
         try:
             scaler = MinMaxScaler(feature_range=(0, 1))
@@ -179,7 +255,7 @@ class PseudoSamples:
         over_idx = prob >= 0.5
         less = prob[prob < 0.5]
         over = prob[prob >= 0.5]
-        prob[less_idx] = less**2
+        prob[less_idx] = less ** 2
         prob[over_idx] = np.sqrt(over)
 
         self.data['prob'] = prob
@@ -189,7 +265,7 @@ class PseudoSamples:
 
         for i in range(self.testNum):
             unif = np.random.uniform(size=len(prob))
-            #사용된 outlier,target은 list에서 지운다
+            # 사용된 outlier,target은 list에서 지운다
             for j in range(len(unif)):
                 u = unif[j]
                 p = prob[j]
@@ -210,14 +286,14 @@ class PseudoSamples:
                 else:
                     if len(outlier_candidates[j]) > 1:
                         r = random.randint(1, len(outlier_candidates[j]))
-                        accepted_outlier = np.expand_dims(outlier_candidates[j][r-1], 0)
-                        outlier_candidates[j].pop(r-1)
+                        accepted_outlier = np.expand_dims(outlier_candidates[j][r - 1], 0)
+                        outlier_candidates[j].pop(r - 1)
                     else:
                         accepted_outlier = outlier_candidates[j][0].reshape(1, self.dim)
                     pseudo_outliers = np.append(pseudo_outliers, accepted_outlier, axis=0)
 
-            #accepted_targets = target_candidates[unif>prob]
-            #pseudo_targets = np.append(pseudo_targets, accepted_targets, axis=0)
+            # accepted_targets = target_candidates[unif>prob]
+            # pseudo_targets = np.append(pseudo_targets, accepted_targets, axis=0)
 
         nearest_mean = np.mean(
             [np.sort(np.sqrt(np.sum((i - np.array(self.data)) ** 2, axis=1)))[3] for i in np.array(self.data)])
