@@ -1,2 +1,8 @@
 *.ipynb
 *.ipynb_checkpoints
+*.csv
+__pycache__
+*.dat
+*.data
+*.tst
+*.txt

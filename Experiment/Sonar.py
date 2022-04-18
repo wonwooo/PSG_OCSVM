@@ -1,15 +1,21 @@
+import sys
+import warnings
+
 import numpy as np
 import pandas as pd
 from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import MinMaxScaler
-import PSG_v2 as PSG
 from sklearn.metrics import f1_score
-np.seterr(divide='ignore', invalid='ignore')
-import warnings
-warnings.filterwarnings(action='ignore')
 from sklearn.metrics import matthews_corrcoef
 from scipy import stats
-def test(generation_type):
+sys.path.append('..')
+from core_utils import OptimumHyperparamFinder
+
+np.seterr(divide='ignore', invalid='ignore')
+warnings.filterwarnings(action='ignore')
+
+
+def main(generation_type):
     print('=========Testing Sonar dataset=========')
     df = pd.read_csv('sonar.all-data', header=None)
     X_data = df.drop(60, axis=1)
@@ -40,7 +46,7 @@ def test(generation_type):
             target_train1 = target_train1.drop('class', axis=1)
             testset1 = testset1.drop('class', axis=1)
 
-            model1 = PSG.PseudoSamples(target_train1,generation_type)
+            model1 = OptimumHyperparamFinder(target_train1,generation_type)
             opt_comb1 = model1.search_optimal_hyperparameters()
 
             clf1 = OneClassSVM(nu=opt_comb1[0], gamma=opt_comb1[1]).fit(target_train1)
@@ -58,7 +64,7 @@ def test(generation_type):
             target_train2 = target_train2.drop('class', axis=1)
             testset2 = testset2.drop('class', axis=1)
 
-            model2 = PSG.PseudoSamples(target_train2,generation_type)
+            model2 = OptimumHyperparamFinder(target_train2,generation_type)
             opt_comb2 = model2.search_optimal_hyperparameters()
 
             clf2 = OneClassSVM(nu=opt_comb2[0], gamma=opt_comb2[1]).fit(target_train2)

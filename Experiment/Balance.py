@@ -1,16 +1,21 @@
+import sys
+import warnings
+
 import numpy as np
 import pandas as pd
 from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import MinMaxScaler
-import PSG_v2 as PSG
 from sklearn.metrics import f1_score
-np.seterr(divide='ignore', invalid='ignore')
-import warnings
-warnings.filterwarnings(action='ignore')
 from sklearn.metrics import matthews_corrcoef
 from scipy import stats
+sys.path.append('..')
+from core_utils import OptimumHyperparamFinder
 
-def test(generation_type):
+np.seterr(divide='ignore', invalid='ignore')
+warnings.filterwarnings(action='ignore')
+
+
+def main(generation_type):
     print('=========Testing Balance dataset=========')
     df = pd.read_csv('balance-scale.data', sep=',', header=None)
     X_data = df.drop(0, axis=1)
@@ -40,7 +45,7 @@ def test(generation_type):
             target_train1 = target_train1.drop('class', axis=1)
             testset1 = testset1.drop('class', axis=1)
 
-            model1 = PSG.PseudoSamples(target_train1, generation_type)
+            model1 = OptimumHyperparamFinder(target_train1, generation_type)
             opt_comb1 = model1.search_optimal_hyperparameters()
 
             clf1 = OneClassSVM(nu=opt_comb1[0], gamma=opt_comb1[1]).fit(target_train1)
@@ -63,7 +68,7 @@ def test(generation_type):
             target_train2 = target_train2.drop('class', axis=1)
             testset2 = testset2.drop('class', axis=1)
 
-            model2 = PSG.PseudoSamples(target_train2, generation_type)
+            model2 = OptimumHyperparamFinder(target_train2, generation_type)
             opt_comb2 = model2.search_optimal_hyperparameters()
 
             clf2 = OneClassSVM(nu=opt_comb2[0], gamma=opt_comb2[1]).fit(target_train2)
@@ -81,8 +86,10 @@ def test(generation_type):
             scores_Balance_micro.append(mean_score_micro)
             scores_Balance_weighted.append(mean_score_weighted)
             MCC.append(np.mean([mcc1, mcc2]))
+
     _, pval_f1 = stats.ttest_1samp(scores_Balance_macro, 0.808)
     _, pval_MCC = stats.ttest_1samp(MCC, 0.739)
+
     with open('TestResult.txt', 'a') as f:
         f.write('Balance : ' + str(np.mean(scores_Balance_macro)) + ', p_f1 : ' + str(pval_f1) + \
                 ', MCC : ' + str(np.mean(MCC)) + ', p_MCC : ' + str(pval_MCC) + '\n')

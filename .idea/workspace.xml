@@ -2,10 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e03ffe7e-a98c-4066-81e1-11b651357864" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/PSG_OCSVM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PSG_OCSVM.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Experiment/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deprecated/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PSG.py" beforeDir="false" afterPath="$PROJECT_DIR$/PSG.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Abalone.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Abalone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Australian.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Australian.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Balance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Diabetes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Diabetes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Experiments.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Glass.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Glass.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Heart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Heart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Landsat.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Landsat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Letter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Letter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/SVMguide1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/SVMguide1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Segment.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Segment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Sonar.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Sonar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Vehicle.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Vehicle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Vote.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Vote.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Vowel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Vowel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Waveform3.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Waveform3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/Winequality.py" beforeDir="false" afterPath="$PROJECT_DIR$/Experiment/Winequality.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiment/bmdatasets.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PSG.py" beforeDir="false" afterPath="$PROJECT_DIR$/deprecated/PSG.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +98,11 @@
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/deprecated" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="PSG" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PSG_OCSVM" />
@@ -91,7 +116,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PSG.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/deprecated/PSG.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
