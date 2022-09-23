@@ -55,7 +55,7 @@ class OptimumHyperparamFinder:
         outlier_candidates = []
         for i in range(len(self.data)):
             idx, point_set = self._get_neighbors(i)
-            target_coord = np.squeeze(point_set[point_set['target'] is True].values)[0:self.dim]
+            target_coord = np.squeeze(point_set[point_set['target'] == True].values)[0:self.dim]
 
             f1_ = len(idx)
             f2_ = np.nan if len(idx) == 1 else distance.euclidean(target_coord, np.mean(point_set.iloc[:, 0:self.dim]))
@@ -112,11 +112,11 @@ class OptimumHyperparamFinder:
         if sum(np.isnan(f1)) == len(f1):
             print('Too large epsilon to calculate feature 1')
         f2 = np.array(f2)
-        f2 = (f2 - min(f2[np.isnan(f2) is False])) / (max(f2[np.isnan(f2) is False]) - min(f2[np.isnan(f2) is False]))
+        f2 = (f2 - min(f2[np.isnan(f2) == False])) / (max(f2[np.isnan(f2) == False]) - min(f2[np.isnan(f2) == False]))
 
         prob = np.array([np.nan if f3[i] == 'outlier' else np.float32(f2[i] - f1[i]) for i in range(len(f1))])
-        max_ = max(prob[np.isnan(prob) is False])
-        min_ = min(prob[np.isnan(prob) is False])
+        max_ = max(prob[np.isnan(prob) == False])
+        min_ = min(prob[np.isnan(prob) == False])
         # prob = np.array([1 if np.isnan(prob[i]) else (prob[i] - min_) / (max_ - min_) for i in range(len(prob))])
 
         return f1, f2, f3, outlier_candidates, target_candidates
@@ -126,8 +126,8 @@ class OptimumHyperparamFinder:
         f1, f2, f3, outlier_candidates, target_candidates = self._get_features()
 
         prob = np.array([np.nan if f3[i] == 'outlier' else (np.float32(f2[i] - f1[i])) for i in range(len(f1))])
-        max_ = max(prob[np.isnan(prob) is False])
-        min_ = min(prob[np.isnan(prob) is False])
+        max_ = max(prob[np.isnan(prob) == False])
+        min_ = min(prob[np.isnan(prob) == False])
         prob = np.array([1 if np.isnan(prob[i]) else (prob[i] - min_) / (max_ - min_) for i in range(len(prob))])
 
         prob = prob.reshape(len(prob), 1)
